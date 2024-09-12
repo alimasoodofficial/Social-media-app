@@ -1,18 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet">
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link rel="stylesheet" href="styles.css">
-     
-    <title>Social App</title>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link rel="stylesheet" href="styles.css">
+
+  <title>Social App</title>
 </head>
+
 <body>
-    <div class="wrapper ">
-        <!-- <div class="d-flex col-2 flex-column flex-shrink-0 p-3 text-white bg-dark position-absolute  top-0 left-0 vh-100" >
+  <div class="wrapper ">
+    <!-- <div class="d-flex col-2 flex-column flex-shrink-0 p-3 text-white bg-dark position-absolute  top-0 left-0 vh-100" >
             <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
               <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
               <span class="fs-4">Sidebar</span>
@@ -65,29 +68,43 @@
               </ul>
             </div>
           </div>  -->
-          <div class="main-div   d-flex flex-column  align-items-center justify-content-center w-100 ">
+    <div class="main-div   d-flex flex-column  align-items-center justify-content-center w-100 ">
 
-          
 
-            <nav class="main-heading d-flex align-items-center justify-content-center bg-primary w-100">
-                <h1 class="text-white">Social Media App</h1>
-            </nav>
-    
-            <section class="main-body d-flex flex-column align-items-center w-100 justify-content-center bg-custom-white ">
-    
-                <div class="post-section d-flex flex-column align-items-center justify-content-center border w-100">
-                    <p>Reading Post</p>
-                    <!-- reading post section -->
-                </div>
-    
-            </section>
-    
+
+      <nav class="main-heading d-flex align-items-center justify-content-center bg-primary w-100">
+        <h1 class="text-white">Social Media App</h1>
+      </nav>
+
+      <section class="main-body  w-100  bg-custom-white ">
+
+        <div class="post d-flex flex-column  align-items-center justify-content-center  ">
+          <h1 class="bg-danger text-white w-100 text-center">Read Post</h1>
+          <div class="read-section">
+            <!-- content here -->
+          </div>
         </div>
-    </div>
-    
-    
+        <div class="create-section  ">
+          <h1 class="w-100 bg-dark text-white text-center">Create Post </h1>
+          <form action="" class="PostForm p-5">
+            <input type="text" id="TitleInput" placeholder="Enter Title">
+            <input type="text" id="DescInput" placeholder="Enter Description">
+            <button type="submit">Submit</button>
+          </form>
+        </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-    <script src="app.js"></script>
+
+      </section>
+
+    </div>
+  </div>
+
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+  <script src="app.js"></script>
 </body>
-</html> 
+
+</html>
