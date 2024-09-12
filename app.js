@@ -1,33 +1,27 @@
 const PostForm = document.querySelector('.PostForm');
 const TitleInput = document.querySelector('#TitleInput');
 const DescInput = document.querySelector('#DescInput');
-let firstTenPosts = []; // To store the first 10 posts
-let lastPostId = 10; // Start from 10 since we display the first 10 posts
+let MainArray = [];
+let lastPostId = 10;
+let currentPage = 1; 
+const postsPerPage = 8; 
 
-// Fetch and display the first 10 posts
 async function getPost() {
-    const response = await fetch('https://jsonplaceholder.typicode.com/posts/');
+    const response = await fetch('https://jsonplaceholder.typicode.com/posts');
     try {
         if (!response.ok) {
             throw new Error(`HTTP error! | status: ${response.status}`);
         }
 
         const data = await response.json();
-        // Slice the first 10 posts and store them in the array
-        firstTenPosts = data.slice(0, 10);
+        MainArray = data.slice(0, 100);
 
-        // Display each post and update lastPostId dynamically
-        firstTenPosts.forEach(post => {
-            ReadPost(post); // Display post
-            lastPostId = post.id; // Set lastPostId to the highest ID
-        });
-
+        renderPosts(MainArray); 
     } catch (error) {
         console.error(error);
     }
 }
 
-// Handle form submission to create a new post
 PostForm.addEventListener('submit', async event => {
     event.preventDefault();
 
@@ -36,19 +30,13 @@ PostForm.addEventListener('submit', async event => {
 
     if (Title && Desc) {
         try {
-            // Create a new post
             const postResponse = await postData(Title, Desc);
 
-            // Increment the lastPostId for the new post
-            postResponse.id = ++lastPostId; // Increment lastPostId and assign to the new post
+            postResponse.id = ++lastPostId; 
+            MainArray.push(postResponse); 
 
-            // Push the new post into the firstTenPosts array
-            firstTenPosts.push(postResponse);
+            renderPosts(MainArray); 
 
-            // Re-render the posts
-            renderPosts(firstTenPosts);
-
-            // Clear input fields
             TitleInput.value = '';
             DescInput.value = '';
         } catch (error) {
@@ -60,7 +48,6 @@ PostForm.addEventListener('submit', async event => {
     }
 });
 
-// Function to create a new post via the API
 async function postData(Title, Desc) {
     try {
         const response = await fetch('https://jsonplaceholder.typicode.com/posts', {
@@ -87,7 +74,6 @@ async function postData(Title, Desc) {
     }
 }
 
-// Function to display a post on the page
 function ReadPost(value) {
     const { id: ID, title: Title, body: Body } = value;
 
@@ -97,49 +83,99 @@ function ReadPost(value) {
     const postBody = document.createElement("p");
     const postID = document.createElement("p");
     const postImage = document.createElement("img");
-    const deleteButton = document.createElement("button"); // Create delete button
+    const deleteButton = document.createElement("button");
+    const editButton = document.createElement("button");
 
     postImage.src = "https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png";
     postTitle.textContent = Title;
     postBody.textContent = Body;
     postID.textContent = `Post ID: ${ID}`;
-    deleteButton.textContent = "Delete"; // Set delete button text
+    deleteButton.textContent = "Delete";
+    editButton.textContent = "Edit";
 
-    deleteButton.addEventListener('click', () => deletePost(ID)); // Add event listener for delete
+    deleteButton.addEventListener('click', () => deletePost(ID));
+    editButton.addEventListener('click', () => editPost(ID));
 
     postImage.style.width = '100px';
-    newDiv.className = 'post-item';
+    newDiv.className = 'post-item rounded rouned-3';
     postSection.style.padding = '30px';
+    deleteButton.className = 'btn btn-primary ms-2 rounded-3';
+    editButton.className = 'btn btn-primary ms-2 rounded-3';
+    
+    newDiv.style.padding = '30px';
+    newDiv.style.boxShadow = '10px 10px 5px #6CBEC7';
 
     newDiv.appendChild(postID);
     newDiv.appendChild(postImage);
     newDiv.appendChild(postTitle);
     newDiv.appendChild(postBody);
-    newDiv.appendChild(deleteButton); // Append delete button to the post
+    newDiv.appendChild(deleteButton);
+    newDiv.appendChild(editButton);
 
     postSection.appendChild(newDiv);
 }
 
-// Function to render all posts (called after push or delete)
 function renderPosts(posts) {
     const postSection = document.querySelector(".read-section");
+    postSection.innerHTML = ''; 
 
-    // Clear the current posts
-    postSection.innerHTML = '';
+    const startIndex = (currentPage - 1) * postsPerPage;
+    const endIndex = startIndex + postsPerPage;
+    const paginatedPosts = posts.slice(0, endIndex); 
 
-    // Render all posts again
-    posts.forEach(post => {
+    paginatedPosts.forEach(post => {
         ReadPost(post);
     });
+
+    renderReadMoreButton(); 
 }
 
 // Function to delete a post by its ID
 function deletePost(postId) {
-    // Remove the post from the array
-    firstTenPosts = firstTenPosts.filter(post => post.id !== postId);
+    MainArray = MainArray.filter(post => post.id !== postId);
+    renderPosts(MainArray);
+}
 
-    // Re-render the posts
-    renderPosts(firstTenPosts);
+// Function to edit a post by its ID
+function editPost(postId) {
+    const postToEdit = MainArray.find(post => post.id === postId);
+
+    if (postToEdit) {
+        const newTitle = prompt('Enter new title:', postToEdit.title);
+        const newBody = prompt('Enter new body:', postToEdit.body);
+
+        if (newTitle && newBody) {
+            postToEdit.title = newTitle;
+            postToEdit.body = newBody;
+            renderPosts(MainArray);
+        } else {
+            alert('Both title and body are required to update the post.');
+        }
+    } else {
+        alert('Post not found.');
+    }
+}
+
+// Function to render "Read More" button
+function renderReadMoreButton() {
+    const readMoreContainer = document.querySelector('.read-more-container');
+    readMoreContainer.innerHTML=''
+
+    const totalPosts = MainArray.length;
+    const postsDisplayed = currentPage * postsPerPage;
+
+    if (postsDisplayed < totalPosts) {
+        const readMoreButton = document.createElement('button');
+        readMoreButton.textContent = 'Read More';
+        readMoreButton.className = 'btn btn-primary mt-3';
+
+        readMoreButton.addEventListener('click', () => {
+            currentPage++;
+            renderPosts(MainArray); 
+        });
+
+        readMoreContainer.appendChild(readMoreButton);
+    }
 }
 
 // Function to display error messages
@@ -148,5 +184,5 @@ function displayError(message) {
     errorContainer.textContent = message;
 }
 
-// Initialize the page by loading the first 10 posts
+// Fetch initial posts
 getPost();
