@@ -2,7 +2,7 @@ const PostForm = document.querySelector('.PostForm');
 const TitleInput = document.querySelector('#TitleInput');
 const DescInput = document.querySelector('#DescInput');
 let MainArray = [];
-let lastPostId = 10;
+let lastPostId = 100;
 let currentPage = 1; 
 const postsPerPage = 8; 
 
@@ -14,7 +14,7 @@ async function getPost() {
         }
 
         const data = await response.json();
-        MainArray = data.slice(0, 100);
+        MainArray = data.slice(0, data.length);
 
         renderPosts(MainArray); 
     } catch (error) {
